@@ -1,4 +1,0 @@
-repository "DogMath@bro_wn@cloud"
-  path "/"
-    br "/main"
-    co "/main"
