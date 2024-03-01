@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoToNextMainSceneButton : MonoBehaviour
+public class MainSceneController : MonoBehaviour
 {
-    // Method to load the next MainScene
-    public void GoToNextMainScene()
+    public void OnPlayButtonClick()
     {
-        // Assuming "MainScene2" is the name of your next MainScene
-        SceneManager.LoadScene("MainScene2");
+        SceneManager.LoadScene("game");
     }
 }
