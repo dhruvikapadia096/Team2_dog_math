@@ -1,6 +1,5 @@
-using System.Collections;
-
 using TMPro;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,33 +8,73 @@ public class SubtractionQuiz : MonoBehaviour
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
     public TextMeshProUGUI feedbackText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI questionNumberText; // New Text field for current question number
 
-    private int questionAnswer; // Variable to store the correct answer
+    private int questionAnswer;
+    private int correctAnswersCount;
+    public int totalQuestions; 
+    private int remainingQuestions;
+    private int currentQuestionNumber; // New variable to track current question number
+
+    private int numberOfChoices = 3;
 
     void Start()
     {
+        totalQuestions = 15;
+        correctAnswersCount = 0;
+        remainingQuestions = totalQuestions;
+        currentQuestionNumber = 0; // Initialize current question number
+        UpdateScoreText();
         GenerateQuestion();
     }
 
     void GenerateQuestion()
     {
+        if (remainingQuestions <= 0)
+        {
+            Debug.Log("Quiz completed!");
+            return;
+        }
+
         int operand1 = Random.Range(1, 10);
         int operand2 = Random.Range(1, operand1);
         questionAnswer = operand1 - operand2;
 
-        questionText.text = $"{operand1} - {operand2} =";
+        currentQuestionNumber++; // Increment current question number
+        questionNumberText.text = $"Question {currentQuestionNumber}"; // Update text field
 
-        int[] answerOptions = { questionAnswer, questionAnswer + 1, questionAnswer - 1 };
-        ShuffleArray(answerOptions);
+        questionText.text = $"{operand1} - {operand2} = __";
+
+        int[] answerOptions = GenerateAnswerOptions();
 
         for (int i = 0; i < answerButtons.Length; i++)
         {
-            // Assign the correct answer to one of the buttons randomly
             answerButtons[i].GetComponentInChildren<Text>().text = answerOptions[i].ToString();
-            answerButtons[i].onClick.RemoveAllListeners(); // Remove previous listeners
+            answerButtons[i].onClick.RemoveAllListeners();
             int chosenAnswer = answerOptions[i];
             answerButtons[i].onClick.AddListener(() => StartCoroutine(CheckAnswerWithDelay(chosenAnswer)));
         }
+    }
+
+    int[] GenerateAnswerOptions()
+    {
+        int[] answerOptions = new int[numberOfChoices];
+        int correctAnswerIndex = Random.Range(0, numberOfChoices);
+        answerOptions[correctAnswerIndex] = questionAnswer;
+
+        for (int i = 0; i < numberOfChoices; i++)
+        {
+            if (i != correctAnswerIndex)
+            {
+                int operation = Random.Range(0, 2) == 0 ? 1 : -1;
+                answerOptions[i] = questionAnswer + operation * Random.Range(1, 3);
+            }
+        }
+
+        ShuffleArray(answerOptions);
+
+        return answerOptions;
     }
 
     IEnumerator CheckAnswerWithDelay(int chosenAnswer)
@@ -45,14 +84,25 @@ public class SubtractionQuiz : MonoBehaviour
 
         Debug.Log($"Selected Answer: {chosenAnswer}. {feedbackText.text}");
 
-        // Wait for 2 seconds
-        yield return new WaitForSeconds(1f);
+        if (isCorrect)
+        {
+            correctAnswersCount++;
+        }
 
-        // Clear the feedback text
+        UpdateScoreText();
+
+        yield return new WaitForSeconds(2f);
+
         feedbackText.text = "";
 
-        // Generate a new question after checking the answer
+        remainingQuestions--;
+
         GenerateQuestion();
+    }
+
+    void UpdateScoreText()
+    {
+        scoreText.text = $"Score: {correctAnswersCount}/{totalQuestions}";
     }
 
     void ShuffleArray<T>(T[] array)
