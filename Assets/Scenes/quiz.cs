@@ -92,6 +92,7 @@ public class SubtractionQuiz : MonoBehaviour
         GenerateQuestion();
 
         UpdateQuestionCounter();
+        //code
     }
 
     void UpdateQuestionCounter()
