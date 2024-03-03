@@ -8,24 +8,23 @@ public class SubtractionQuiz : MonoBehaviour
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
     public TextMeshProUGUI feedbackText;
-    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI questionNumberText; // New Text field for current question number
 
     private int questionAnswer;
-    private int correctAnswersCount;
     public int totalQuestions; 
     private int remainingQuestions;
     private int currentQuestionNumber; // New variable to track current question number
 
     private int numberOfChoices = 3;
 
+
     void Start()
     {
         totalQuestions = 15;
-        correctAnswersCount = 0;
-        remainingQuestions = totalQuestions;
+        // remainingQuestions = totalQuestions;
         currentQuestionNumber = 0; // Initialize current question number
-        UpdateScoreText();
+        remainingQuestions = 15 - currentQuestionNumber;
+        UpdateQuestionCounter();
         GenerateQuestion();
     }
 
@@ -42,7 +41,7 @@ public class SubtractionQuiz : MonoBehaviour
         questionAnswer = operand1 - operand2;
 
         currentQuestionNumber++; // Increment current question number
-        questionNumberText.text = $"Question {currentQuestionNumber}"; // Update text field
+        questionNumberText.text = $"Question {currentQuestionNumber}/15"; // Update text field
 
         questionText.text = $"{operand1} - {operand2} = __";
 
@@ -84,13 +83,6 @@ public class SubtractionQuiz : MonoBehaviour
 
         Debug.Log($"Selected Answer: {chosenAnswer}. {feedbackText.text}");
 
-        if (isCorrect)
-        {
-            correctAnswersCount++;
-        }
-
-        UpdateScoreText();
-
         yield return new WaitForSeconds(2f);
 
         feedbackText.text = "";
@@ -98,11 +90,13 @@ public class SubtractionQuiz : MonoBehaviour
         remainingQuestions--;
 
         GenerateQuestion();
+
+        UpdateQuestionCounter();
     }
 
-    void UpdateScoreText()
+    void UpdateQuestionCounter()
     {
-        scoreText.text = $"Score: {correctAnswersCount}/{totalQuestions}";
+        questionNumberText.text = $"Question: {currentQuestionNumber}/{totalQuestions}";
     }
 
     void ShuffleArray<T>(T[] array)
