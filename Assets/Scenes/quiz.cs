@@ -9,11 +9,14 @@ public class SubtractionQuiz : MonoBehaviour
     public Button[] answerButtons;
     public TextMeshProUGUI feedbackText;
     public TextMeshProUGUI questionNumberText; // New Text field for current question number
+    public TextMeshProUGUI scoreText;
 
     private int questionAnswer;
     public int totalQuestions; 
     private int remainingQuestions;
     private int currentQuestionNumber; // New variable to track current question number
+    private int correctAnswersCount; // Variable to track the number of correct answers
+
 
     private int numberOfChoices = 3;
 
@@ -26,6 +29,7 @@ public class SubtractionQuiz : MonoBehaviour
         remainingQuestions = 15 - currentQuestionNumber;
         UpdateQuestionCounter();
         GenerateQuestion();
+
     }
 
     void GenerateQuestion()
@@ -33,6 +37,7 @@ public class SubtractionQuiz : MonoBehaviour
         if (remainingQuestions <= 0)
         {
             Debug.Log("Quiz completed!");
+            ShowScore(); // Add this line to display the score when the quiz completes
             return;
         }
 
@@ -80,6 +85,12 @@ public class SubtractionQuiz : MonoBehaviour
     {
         bool isCorrect = chosenAnswer == questionAnswer;
         feedbackText.text = isCorrect ? "Correct!" : "Incorrect";
+        
+        if (isCorrect)
+    {
+        correctAnswersCount++; // Increment correct answer count if the answer is correct
+    }
+
 
         Debug.Log($"Selected Answer: {chosenAnswer}. {feedbackText.text}");
 
@@ -99,6 +110,35 @@ public class SubtractionQuiz : MonoBehaviour
     {
         questionNumberText.text = $"Question: {currentQuestionNumber}/{totalQuestions}";
     }
+
+    void ShowScore()
+    {
+
+        questionText.gameObject.SetActive(false);
+        foreach (var button in answerButtons)
+        {
+            button.gameObject.SetActive(false);
+        }
+        feedbackText.gameObject.SetActive(false);
+        questionNumberText.gameObject.SetActive(false);
+
+        Debug.Log("Inside showScore()");
+        Debug.Log($"correctAnswersCount {correctAnswersCount}");
+
+        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}/{totalQuestions}"; // Display the score with additional text;
+
+        if (scoreText != null)
+        {
+            scoreText.text = $"Quiz Completed!!!\nScore: {correctAnswersCount}/{totalQuestions}"; // Display the score with additional text // Display the score if scoreText is not null
+        }
+        else
+        {
+            Debug.LogError("scoreText is not assigned in the Inspector."); // Log an error if scoreText is null
+        }
+
+    }
+
+
 
     void ShuffleArray<T>(T[] array)
     {
