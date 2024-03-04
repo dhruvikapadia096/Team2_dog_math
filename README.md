@@ -7,7 +7,7 @@ Welcome to the Team2_dog_math Unity project! This game is developed by Team 2, f
 ### Step 1: Clone or Download the Repository
 - **Clone via Git**: Open your terminal or command prompt and run:
   
-> git clone https://github.com/dhruvikapadia096/Team2_dog_math.git
+'git clone https://github.com/dhruvikapadia096/Team2_dog_math.git'
 
 - **Download as ZIP**:
 - Visit the [repository page](https://github.com/dhruvikapadia096/Team2_dog_math).
