@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 64303934}
   - component: {fileID: 64303933}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Gamescript
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 64303932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3909d400bf96858498157d04fb74c736, type: 3}
+  m_Script: {fileID: 11500000, guid: e0e84445a99c2a849a2c196b67b7a1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   numberText: {fileID: 888521841}
@@ -760,7 +760,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3909d400bf96858498157d04fb74c736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberText: {fileID: 888521841}
 --- !u!1 &1794327962
 GameObject:
   m_ObjectHideFlags: 0
