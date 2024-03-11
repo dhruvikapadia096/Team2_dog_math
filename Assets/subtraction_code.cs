@@ -18,13 +18,18 @@ public class SubtractionQuiz : MonoBehaviour
     private int correctAnswersCount;
 
     private int numberOfChoices = 3;
+    private float accuracy;
+    private float rate;
+    private int totalWrongAnswers;
+    private float startTime, endTime, totalTime;
 
     void Start()
     {
-        totalQuestions = 15;
+        totalQuestions = 5;
         currentQuestionNumber = 0;
-        remainingQuestions = 15 - currentQuestionNumber;
+        remainingQuestions = totalQuestions - currentQuestionNumber;
         UpdateQuestionCounter();
+        startTime = Time.time;
         GenerateQuestion();
     }
 
@@ -42,7 +47,7 @@ public class SubtractionQuiz : MonoBehaviour
         questionAnswer = operand1 - operand2;
 
         currentQuestionNumber++;
-        questionNumberText.text = $"Question {currentQuestionNumber}/15";
+        questionNumberText.text = $"{currentQuestionNumber}/{totalQuestions}";
 
         questionText.text = $"{operand1} - {operand2} = __";
 
@@ -108,7 +113,7 @@ public class SubtractionQuiz : MonoBehaviour
 
     void UpdateQuestionCounter()
     {
-        questionNumberText.text = $"Question: {currentQuestionNumber}/{totalQuestions}";
+        questionNumberText.text = $"{currentQuestionNumber}/{totalQuestions}";
     }
 
     void ShowScore()
@@ -124,11 +129,24 @@ public class SubtractionQuiz : MonoBehaviour
         Debug.Log("Inside showScore()");
         Debug.Log($"correctAnswersCount {correctAnswersCount}");
 
-        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}/{totalQuestions}";
+        Debug.Log($"totalQuestions {totalQuestions}");
+
+        accuracy = ((float)correctAnswersCount / totalQuestions) * 100;
+        totalWrongAnswers = totalQuestions - correctAnswersCount;
+
+        endTime = Time.time;
+        totalTime = endTime - startTime;
+
+        rate = (totalQuestions / totalTime) * 60f;
+
+        // scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}/{totalQuestions}";
+        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
 
         if (scoreText != null)
         {
-            scoreText.text = $"Quiz Completed!!!\nScore: {correctAnswersCount}/{totalQuestions}";
+            // scoreText.text = $"Completed!!!\nScore: {correctAnswersCount}/{totalQuestions}";
+            // scoreText.text = $"Completed!!\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
+            scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nAccuracy: {accuracy}%\nRate: {rate:F2}/min\nWrong: {totalWrongAnswers}\n";
         }
         else
         {
