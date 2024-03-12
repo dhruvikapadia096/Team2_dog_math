@@ -1,7 +1,10 @@
 using TMPro;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
+using System.Collections;
+using System.IO;
 
 public class SubtractionQuiz : MonoBehaviour
 {
@@ -15,13 +18,13 @@ public class SubtractionQuiz : MonoBehaviour
     public int totalQuestions;
     private int remainingQuestions;
     private int currentQuestionNumber;
-    private int correctAnswersCount;
+    public int correctAnswersCount;
 
     private int numberOfChoices = 3;
-    private float accuracy;
-    private float rate;
+    public float accuracy;
+    public float rate;
     private int totalWrongAnswers;
-    private float startTime, endTime, totalTime;
+    public float startTime, endTime, totalTime;
 
     void Start()
     {
@@ -42,8 +45,8 @@ public class SubtractionQuiz : MonoBehaviour
             return;
         }
 
-        int operand1 = Random.Range(1, 10);
-        int operand2 = Random.Range(1, operand1);
+        int operand1 = UnityEngine.Random.Range(1, 10);
+        int operand2 = UnityEngine.Random.Range(1, operand1);
         questionAnswer = operand1 - operand2;
 
         currentQuestionNumber++;
@@ -65,7 +68,7 @@ public class SubtractionQuiz : MonoBehaviour
     int[] GenerateAnswerOptions()
     {
         int[] answerOptions = new int[numberOfChoices];
-        int correctAnswerIndex = Random.Range(0, numberOfChoices);
+        int correctAnswerIndex = UnityEngine.Random.Range(0, numberOfChoices);
         answerOptions[correctAnswerIndex] = questionAnswer;
 
         for (int i = 0; i < numberOfChoices; i++)
@@ -75,9 +78,9 @@ public class SubtractionQuiz : MonoBehaviour
                 int potentialAnswer;
                 do
                 {
-                    int operation = Random.Range(0, 2) == 0 ? 1 : -1;
-                    potentialAnswer = questionAnswer + operation * Random.Range(1, 3);
-                } while (System.Array.IndexOf(answerOptions, potentialAnswer) != -1);
+                    int operation = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+                    potentialAnswer = questionAnswer + operation * UnityEngine.Random.Range(1, 3);
+                } while (Array.IndexOf(answerOptions, potentialAnswer) != -1);
 
                 answerOptions[i] = potentialAnswer;
             }
@@ -100,7 +103,7 @@ public class SubtractionQuiz : MonoBehaviour
 
         Debug.Log($"Selected Answer: {chosenAnswer}. {feedbackText.text}");
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         feedbackText.text = "";
 
@@ -138,27 +141,48 @@ public class SubtractionQuiz : MonoBehaviour
         totalTime = endTime - startTime;
 
         rate = (totalQuestions / totalTime) * 60f;
+        Debug.Log($"Rate: {rate}");
+        Debug.Log($"totalQuestions: {totalQuestions}");
+        Debug.Log($"totalTime: {totalTime}");
 
-        // scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}/{totalQuestions}";
-        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
+        string currentDirectory = Application.dataPath;
+        string filePath = Path.Combine(currentDirectory, "output.txt");
+        Debug.Log($"File Path: {filePath}");
 
-        if (scoreText != null)
+        string csvContent = $"{totalQuestions},{correctAnswersCount},{accuracy},{rate:F2}";
+
+        try
         {
-            // scoreText.text = $"Completed!!!\nScore: {correctAnswersCount}/{totalQuestions}";
-            // scoreText.text = $"Completed!!\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
-            scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nAccuracy: {accuracy}%\nRate: {rate:F2}/min\nWrong: {totalWrongAnswers}\n";
+            File.WriteAllText(filePath, csvContent);
         }
-        else
+        catch (Exception e)
         {
-            Debug.LogError("scoreText is not assigned in the Inspector.");
+            Debug.LogError($"Error writing to file: {e.Message}");
         }
+
+        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nAccuracy: {accuracy}%\nRate: {rate:F2}/min\nWrong: {totalWrongAnswers}\n";
+        Debug.Log(scoreText.text);
+
+        // Check if it's the last question
+        if (currentQuestionNumber >= totalQuestions)
+        {
+            StartCoroutine(LoadNextScene());
+        }
+    }
+
+    IEnumerator LoadNextScene()
+    {
+        yield return new WaitForSeconds(0.20f); // Adjust the delay as needed
+
+        // Load the next scene named "ScoreDisplay"
+        SceneManager.LoadScene("ScoreDisplay");
     }
 
     void ShuffleArray<T>(T[] array)
     {
         for (int i = array.Length - 1; i > 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(0, i + 1);
             T temp = array[i];
             array[i] = array[j];
             array[j] = temp;
