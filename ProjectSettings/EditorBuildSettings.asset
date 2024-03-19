@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Subtraction.unity
     guid: 5ae466299579c0a41964163b6ac5ddf7
+  - enabled: 1
+    path: Assets/Scenes/ScoreDisplay.unity
+    guid: ac041ca0619e6514887e84278f5b92db
   m_configObjects: {}
