@@ -34,4 +34,10 @@ public class Pausemenu : MonoBehaviour
         SceneManager.LoadScene("UI");
     }
 
+    public void Pause_exit()
+    {
+        pausemenuPanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
 }
