@@ -2,6 +2,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SubtractionQuiz : MonoBehaviour
 {
@@ -38,7 +39,9 @@ public class SubtractionQuiz : MonoBehaviour
         if (remainingQuestions <= 0)
         {
             Debug.Log("Quiz completed!");
-            ShowScore();
+            endTime = Time.time;
+            totalTime = endTime - startTime;
+            LoadNextScene();
             return;
         }
 
@@ -90,6 +93,7 @@ public class SubtractionQuiz : MonoBehaviour
 
     IEnumerator CheckAnswerWithDelay(int chosenAnswer)
     {
+
         bool isCorrect = chosenAnswer == questionAnswer;
         feedbackText.text = isCorrect ? "Correct!" : "Incorrect";
 
@@ -116,42 +120,13 @@ public class SubtractionQuiz : MonoBehaviour
         questionNumberText.text = $"{currentQuestionNumber}/{totalQuestions}";
     }
 
-    void ShowScore()
+    void LoadNextScene()
     {
-        questionText.gameObject.SetActive(false);
-        foreach (var button in answerButtons)
-        {
-            button.gameObject.SetActive(false);
-        }
-        feedbackText.gameObject.SetActive(false);
-        questionNumberText.gameObject.SetActive(false);
-
-        Debug.Log("Inside showScore()");
-        Debug.Log($"correctAnswersCount {correctAnswersCount}");
-
-        Debug.Log($"totalQuestions {totalQuestions}");
-
-        accuracy = ((float)correctAnswersCount / totalQuestions) * 100;
-        totalWrongAnswers = totalQuestions - correctAnswersCount;
-
-        endTime = Time.time;
-        totalTime = endTime - startTime;
-
-        rate = (totalQuestions / totalTime) * 60f;
-
-        // scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}/{totalQuestions}";
-        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
-
-        if (scoreText != null)
-        {
-            // scoreText.text = $"Completed!!!\nScore: {correctAnswersCount}/{totalQuestions}";
-            // scoreText.text = $"Completed!!\nWrong: {totalWrongAnswers}\nRate: {rate}\nAccuracy: {accuracy}%";
-            scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nAccuracy: {accuracy}%\nRate: {rate:F2}/min\nWrong: {totalWrongAnswers}\n";
-        }
-        else
-        {
-            Debug.LogError("scoreText is not assigned in the Inspector.");
-        }
+        SceneManager.LoadScene("ScoreBoard", LoadSceneMode.Single);
+        PlayerPrefs.SetInt("Score", correctAnswersCount);
+        PlayerPrefs.SetFloat("Accuracy", ((float)correctAnswersCount / totalQuestions) * 100);
+        PlayerPrefs.SetFloat("Rate", (totalQuestions/totalTime) * 60F);
+        PlayerPrefs.SetInt("Wrong", totalQuestions - correctAnswersCount);
     }
 
     void ShuffleArray<T>(T[] array)
@@ -164,4 +139,5 @@ public class SubtractionQuiz : MonoBehaviour
             array[j] = temp;
         }
     }
+   
 }
