@@ -235,39 +235,22 @@ IEnumerator RepeatedPopEffect()
         feedbackText.gameObject.SetActive(false);
         questionNumberText.gameObject.SetActive(false);
 
-        accuracy = ((float)correctAnswersCount / totalQuestions) * 100;
-        totalWrongAnswers = totalQuestions - correctAnswersCount;
-
         endTime = Time.time;
         totalTime = endTime - startTime;
 
-        rate = (totalQuestions / totalTime) * 60f;
-
-        string currentDirectory = Application.persistentDataPath;
-        string filePath = Path.Combine(currentDirectory, "output.txt");
-
-        string csvContent = $"{totalQuestions},{correctAnswersCount},{accuracy},{rate:F2}";
-
-        try
-        {
-            File.WriteAllText(filePath, csvContent);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error writing to file: {e.Message}");
-        }
-
-        scoreText.text = $"Quiz Completed!!\nScore: {correctAnswersCount}\nAccuracy: {accuracy}%\nRate: {rate:F2}/min\nWrong: {totalWrongAnswers}\n";
+        PlayerPrefs.SetInt("Score", correctAnswersCount);
+        PlayerPrefs.SetFloat("Accuracy", ((float)correctAnswersCount / totalQuestions) * 100);
+        PlayerPrefs.SetFloat("Rate", (totalQuestions / totalTime) * 60f);
+        PlayerPrefs.SetInt("Wrong", totalQuestions - correctAnswersCount);
 
         if (currentQuestionNumber >= totalQuestions)
         {
-            StartCoroutine(LoadNextScene());
+            LoadNextScene();
         }
     }
 
-    IEnumerator LoadNextScene()
+    void LoadNextScene()
     {
-        yield return new WaitForSeconds(2f); // Adjust the delay as needed
         SceneManager.LoadScene("ScoreBoard");
     }
 
