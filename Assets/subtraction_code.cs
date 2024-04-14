@@ -14,7 +14,14 @@ public class SubtractionQuiz : MonoBehaviour
     public TextMeshProUGUI feedbackText;
     public TextMeshProUGUI questionNumberText;
     public TextMeshProUGUI scoreText;
+    // Audio clips for feedback
+    public AudioClip correctAnswerClip;
+    public AudioClip incorrectAnswerClip;
 
+    // Audio sources for playing the clips
+    private AudioSource correctAnswerAudioSource;
+    private AudioSource incorrectAnswerAudioSource;
+    
     private int questionAnswer;
     public int totalQuestions;
     private int remainingQuestions;
@@ -37,6 +44,11 @@ public class SubtractionQuiz : MonoBehaviour
         startTime = Time.time;
         GenerateQuestion();
         StartCoroutine(RepeatedPopEffect());
+        correctAnswerAudioSource = gameObject.AddComponent<AudioSource>();
+        incorrectAnswerAudioSource = gameObject.AddComponent<AudioSource>();
+
+        correctAnswerAudioSource.clip = correctAnswerClip;
+        incorrectAnswerAudioSource.clip = incorrectAnswerClip;
     }
 IEnumerator RepeatedPopEffect()
     {
@@ -171,10 +183,14 @@ IEnumerator RepeatedPopEffect()
         {
             correctAnswersCount++;
             correctgif.SetActive(true);
+            correctAnswerAudioSource.Play();
+            
         }
         else
         {
             Incorretgif.SetActive(true);
+            incorrectAnswerAudioSource.Play();
+            
         }
 
         // Wait for a short duration
@@ -196,10 +212,8 @@ IEnumerator RepeatedPopEffect()
             button.gameObject.SetActive(false);
         }
     }
-
-
-        
-        // Move to the next question
+    
+    // Move to the next question
         remainingQuestions--;
         GenerateQuestion();
         UpdateQuestionCounter();

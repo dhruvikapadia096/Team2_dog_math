@@ -2679,6 +2679,8 @@ MonoBehaviour:
   feedbackText: {fileID: 1269330100}
   questionNumberText: {fileID: 164336405}
   scoreText: {fileID: 1717224928}
+  correctAnswerClip: {fileID: 8300000, guid: ecb5c2bb3fb83c84f9aa85433d347d0a, type: 3}
+  incorrectAnswerClip: {fileID: 8300000, guid: 5e3da31822336e9439827268d8985a83, type: 3}
   totalQuestions: 5
   correctAnswersCount: 0
   Incorretgif: {fileID: 957040678}
