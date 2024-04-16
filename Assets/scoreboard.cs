@@ -31,7 +31,7 @@ public class scoreboard : MonoBehaviour
 
     void exitGame()
     {
-        SceneManager.LoadScene("Start");
+        SceneManager.LoadScene("UI");
     }
 
 }
