@@ -44,7 +44,7 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
       //_bannerView = new BannerView(_adUnitId, AdSize.MediumRectangle, AdPosition.Bottom);
 
         // Create a 320x50 banner views at coordinate (0,50) on screen.
-        _bannerView = new BannerView(_adUnitId, AdSize.Banner, 50,725 );
+        _bannerView = new BannerView(_adUnitId, AdSize.Banner, 60,715 );
 
         // Use the AdSize argument to set a custom size for the ad.
         AdSize adSize = new AdSize(50, 50);
@@ -125,5 +125,15 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
             _bannerView.Destroy();
             _bannerView = null;
         }
+    }
+
+    public void ShowAd()
+    {
+            _bannerView.Show();
+    }
+
+    public void HideAd()
+    {
+        _bannerView.Hide();
     }
 }
