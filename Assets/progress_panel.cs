@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ProgressPanel : MonoBehaviour
 {
@@ -33,5 +34,9 @@ public class ProgressPanel : MonoBehaviour
             backgroundColor.a = overlayActive ? 0.2f : 1f; // Adjust as needed
             backgroundElement.GetComponent<Image>().color = backgroundColor;
         }
+    }
+    public void ExitToMainScene()
+    {
+        SceneManager.LoadScene("UI");
     }
 }

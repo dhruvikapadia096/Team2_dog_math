@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SettingsButton : MonoBehaviour
 {
@@ -42,5 +43,10 @@ public class SettingsButton : MonoBehaviour
         string userName = userNameInput.text;
         Debug.Log("Player Name: " + userName);
         // Do something with the player name, such as save it or use it in your game logic
+    }
+
+    public void ExitToMainScene()
+    {
+        SceneManager.LoadScene("UI");
     }
 }
