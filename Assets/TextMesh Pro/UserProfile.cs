@@ -7,8 +7,8 @@ public static class UserProfile
 {
 
 
-   public static string baseAzureFunctionUrl = "https://submathgame.azurewebsites.net/api/user/";
-   public static string azureFunctionAuthenticationParams = "code=rGp4A5IQfpryFRimoMjeqvXSde3FU7Lqwr6aqCMJNG2RAzFuCdhfnQ==&clientId=default";
+   public static string baseAzureFunctionUrl = "https://team2-database.azurewebsites.net/api/user/";
+   public static string azureFunctionAuthenticationParams = "code=FvmKGPh5nj89X4LTHWQRR3oZaTuyPf08NTpPyWv2FbhaAzFu6MkS4g==&clientId=default";
 
 
   public static IEnumerator GetUsers(string deviceID, Action<User[]> onSuccess, Action<string> onError)

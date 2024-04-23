@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 public static class GameScript
 {
-    public static string baseAzureFunctionUrl = "https://submathgame.azurewebsites.net/api/game/";
-    public static string azureFunctionAuthenticationParams = "code=rGp4A5IQfpryFRimoMjeqvXSde3FU7Lqwr6aqCMJNG2RAzFuCdhfnQ==&clientId=default";
+
+    public static string baseAzureFunctionUrl = "https://team2-database.azurewebsites.net/api/game/";
+    public static string azureFunctionAuthenticationParams = "code=FvmKGPh5nj89X4LTHWQRR3oZaTuyPf08NTpPyWv2FbhaAzFu6MkS4g==&clientId=default";
 
 
     public static IEnumerator UpdateUserResponse(string gameID, bool validUserResponse, System.Action<bool> onSuccess, System.Action<string> onError)
