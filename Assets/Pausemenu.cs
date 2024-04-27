@@ -4,16 +4,22 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuPanel;
-    [SerializeField] private GameObject blurPanel; // Reference to the panel for blurring the background
+    [SerializeField] private GameObject blackPanel; // Reference to the black panel
 
     public void Pause()
     {
         Time.timeScale = 0f;
         SetPauseMenuActive(true);
         // Enable blur effect when pausing
-        if (blurPanel != null)
+
+        // Show the black panel when pausing
+        if (blackPanel != null)
         {
-            blurPanel.SetActive(true);
+            blackPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Black panel reference is not set!");
         }
     }
 
@@ -21,11 +27,6 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         SetPauseMenuActive(false);
-        // Disable blur effect when resuming
-        if (blurPanel != null)
-        {
-            blurPanel.SetActive(false);
-        }
     }
 
     public void Restart()
@@ -39,7 +40,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("UI");
     }
-    public void cancel()
+
+    public void Cancel()
     {
         Time.timeScale = 1f;
         SetPauseMenuActive(false);
@@ -50,6 +52,16 @@ public class PauseMenu : MonoBehaviour
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(active);
+
+            // Activate/deactivate the black panel accordingly
+            if (blackPanel != null)
+            {
+                blackPanel.SetActive(active);
+            }
+            else
+            {
+                Debug.LogError("Black panel is not assigned!");
+            }
         }
         else
         {

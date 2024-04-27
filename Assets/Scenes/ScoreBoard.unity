@@ -546,13 +546,15 @@ MonoBehaviour:
   - {fileID: 1394884958}
   - {fileID: 1182752963}
   - {fileID: 44877280}
-  maxScale: 1.2
-  minScale: 0.8
-  popInDuration: 1
-  popOutDuration: 1
+  blurAlpha: 0.3
+  displayDuration: 2
+  fadeDuration: 1
   restart: {fileID: 1015027134}
   exit: {fileID: 317709001}
   rotationSpeed: 30
+  accuracyText: {fileID: 357288482}
+  rateText: {fileID: 2116375978}
+  wrongText: {fileID: 545361081}
 --- !u!114 &64303936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,7 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuPanel: {fileID: 460597101}
-  blurPanel: {fileID: 2008893087}
+  blackPanel: {fileID: 0}
 --- !u!1 &78146520
 GameObject:
   m_ObjectHideFlags: 0
