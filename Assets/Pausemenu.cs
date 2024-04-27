@@ -39,6 +39,11 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("UI");
     }
+    public void cancel()
+    {
+        Time.timeScale = 1f;
+        SetPauseMenuActive(false);
+    }
 
     private void SetPauseMenuActive(bool active)
     {
