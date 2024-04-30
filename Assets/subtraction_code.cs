@@ -91,7 +91,6 @@ IEnumerator RepeatedPopEffect()
 
        questionText.text = $"{operand1} - {operand2} = __";
 
-
        Debug.Log("Before displayDogsForQuestion");
        Debug.Log("Operand1 - " + operand1);
        Debug.Log("Operand2 - " + operand2);

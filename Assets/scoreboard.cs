@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.IO;
+using System.Collections.Generic;
 
 public class StarDisplay : MonoBehaviour
 {
@@ -20,8 +22,14 @@ public class StarDisplay : MonoBehaviour
     public TextMeshProUGUI rateText;
     public TextMeshProUGUI wrongText;
 
+    private string filePath;
+    private Dictionary<string, UserStats> userStatsDictionary;
+
     void Start()
     {
+        filePath = Path.Combine(Application.persistentDataPath, "userStats.json");
+        LoadUserStats();
+
         StarDis();
         restart.onClick.AddListener(restartGame);
         exit.onClick.AddListener(exitGame);
@@ -29,12 +37,62 @@ public class StarDisplay : MonoBehaviour
 
     void StarDis()
     {
-        scoreText.text = PlayerPrefs.GetInt("Score", 0).ToString();
-        accuracyText.text = PlayerPrefs.GetFloat("Accuracy", 0f).ToString();
+        int score = PlayerPrefs.GetInt("Score", 0);
+        float accuracy = PlayerPrefs.GetFloat("Accuracy", 0f);
+
+        scoreText.text = score.ToString();
+        accuracyText.text = accuracy.ToString();
         rateText.text = PlayerPrefs.GetFloat("Rate", 0f).ToString("0.0");
         wrongText.text = PlayerPrefs.GetInt("Wrong", 0).ToString();
 
+        UpdateUserStats(PlayerPrefs.GetString("PlayerName"), score, accuracy);
+
         StartCoroutine(DisplayStarsCoroutine());
+        
+    }
+
+    private void LoadUserStats()
+    {
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            SerializableDictionary<string, UserStats> serializableDictionary = JsonUtility.FromJson<SerializableDictionary<string, UserStats>>(json);
+            userStatsDictionary = serializableDictionary.ToDictionary();
+        }
+        else
+        {
+            userStatsDictionary = new Dictionary<string, UserStats>();
+        }
+    }
+
+    public void UpdateUserStats(string username, int score, float accuracy)
+    {
+        if (userStatsDictionary.ContainsKey(username))
+        {
+            UserStats stats = userStatsDictionary[username];
+            if (score > stats.highestScore)
+                stats.highestScore = score;
+
+            stats.averageAccuracy = ((stats.averageAccuracy * stats.gamesPlayed) + accuracy) / (stats.gamesPlayed + 1);
+            stats.gamesPlayed++;
+        }
+        else
+        {
+            userStatsDictionary[username] = new UserStats
+            {
+                highestScore = score,
+                averageAccuracy = accuracy,
+                gamesPlayed = 1
+            };
+        }
+
+        SaveUserStats();
+    }
+
+    private void SaveUserStats()
+    {
+        string json = JsonUtility.ToJson(new SerializableDictionary<string, UserStats>(userStatsDictionary));
+        File.WriteAllText(filePath, json);
     }
 
     IEnumerator DisplayStarsCoroutine()
