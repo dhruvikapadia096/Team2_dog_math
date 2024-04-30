@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 using System.IO;
-
+using System.Collections.Generic;
 
 public class SubtractionQuiz : MonoBehaviour
 {
@@ -90,7 +90,8 @@ IEnumerator RepeatedPopEffect()
 
 
        questionText.text = $"{operand1} - {operand2} = __";
-
+        string textToSpeech = $"{operand1} minus {operand2} = to";
+        TTSManager.Instance().Speak(textToSpeech);  
 
        Debug.Log("Before displayDogsForQuestion");
        Debug.Log("Operand1 - " + operand1);
