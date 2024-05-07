@@ -42,6 +42,7 @@ public class SettingsButton : MonoBehaviour
     {
         string userName = userNameInput.text;
         Debug.Log("Player Name: " + userName);
+        PlayerPrefs.SetString("PlayerName", userName);
         // Do something with the player name, such as save it or use it in your game logic
     }
 

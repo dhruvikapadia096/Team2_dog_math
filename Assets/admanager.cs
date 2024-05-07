@@ -11,14 +11,14 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         {
             CreateBannerView();
             LoadAd();
-            
+
             // This callback is called once the MobileAds SDK is initialized.
         });
     }
 
     // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
-    private string _adUnitId = "ca-app-pub-3940256099942544/6300978111";//ca-app-pub-3940256099942544/6300978111
+    private string _adUnitId = "ca-app-pub-8620765103026502/7732363127";//ca-app-pub-3940256099942544/6300978111
 #elif UNITY_IPHONE
   private string _adUnitId = "ca-app-pub-3940256099942544/2934735716";
 #else
@@ -41,10 +41,10 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
         }
 
         // Create a 320x50 banner at top of the screen
-      //_bannerView = new BannerView(_adUnitId, AdSize.MediumRectangle, AdPosition.Bottom);
+        _bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Bottom);
 
         // Create a 320x50 banner views at coordinate (0,50) on screen.
-        _bannerView = new BannerView(_adUnitId, AdSize.Banner, 60,715 );
+        //_bannerView = new BannerView(_adUnitId, AdSize.Banner, 60, 755);
 
         // Use the AdSize argument to set a custom size for the ad.
         AdSize adSize = new AdSize(50, 50);
@@ -129,11 +129,69 @@ public class GoogleMobileAdsDemoScript : MonoBehaviour
 
     public void ShowAd()
     {
-            _bannerView.Show();
+        _bannerView.Show();
     }
 
+    public GameObject paymentPanel;
+    public GameObject blackPanel;
+    [SerializeField] private AudioSource audioSource;
     public void HideAd()
     {
-        _bannerView.Hide();
+        // Hide the ad banner view (replace _bannerView.Hide() with appropriate method call)
+        // _bannerView.Hide();
+
+        // Open the payment panel
+        if (paymentPanel != null)
+        {
+            paymentPanel.SetActive(true);
+
+            // Activate the black panel
+            if (blackPanel != null)
+            {
+                blackPanel.SetActive(true);
+            }
+            else
+            {
+                Debug.LogError("Black panel reference is not set!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Payment panel reference is not set!");
+        }
     }
+
+    public void Cancel()
+{
+    // Close the payment panel
+    if (paymentPanel != null)
+    {
+        paymentPanel.SetActive(false);
+
+        // Deactivate the black panel
+        if (blackPanel != null)
+        {
+            blackPanel.SetActive(false);
+
+            // Play audio
+            if (audioSource != null)
+            {
+                audioSource.enabled = true;
+                audioSource.Play();
+            }
+            else
+            {
+                Debug.LogError("Audio source reference is not set!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Black panel reference is not set!");
+        }
+    }
+    else
+    {
+        Debug.LogError("Payment panel reference is not set!");
+    }
+}
 }

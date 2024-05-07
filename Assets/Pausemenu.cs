@@ -1,19 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuPanel;
-    [SerializeField] private GameObject blurPanel; // Reference to the panel for blurring the background
-
+    [SerializeField] private GameObject blackPanel; // Reference to the black panel
+    [SerializeField] private AudioSource audioSource;
     public void Pause()
     {
         Time.timeScale = 0f;
         SetPauseMenuActive(true);
         // Enable blur effect when pausing
-        if (blurPanel != null)
+
+        // Show the black panel when pausing
+        if (blackPanel != null)
         {
-            blurPanel.SetActive(true);
+            blackPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Black panel reference is not set!");
         }
     }
 
@@ -21,23 +28,33 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         SetPauseMenuActive(false);
-        // Disable blur effect when resuming
-        if (blurPanel != null)
-        {
-            blurPanel.SetActive(false);
-        }
+        audioSource.enabled = true;
+audioSource.Play();
     }
 
     public void Restart()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("subtraction");
+        audioSource.enabled = true;
+audioSource.Play();
+
     }
 
     public void Exit()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("UI");
+        audioSource.enabled = true;
+audioSource.Play();
+    }
+
+    public void Cancel()
+    {
+        Time.timeScale = 1f;
+        SetPauseMenuActive(false);
+        audioSource.enabled = true;
+audioSource.Play();
     }
 
     private void SetPauseMenuActive(bool active)
@@ -45,6 +62,16 @@ public class PauseMenu : MonoBehaviour
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(active);
+
+            // Activate/deactivate the black panel accordingly
+            if (blackPanel != null)
+            {
+                blackPanel.SetActive(active);
+            }
+            else
+            {
+                Debug.LogError("Black panel is not assigned!");
+            }
         }
         else
         {
